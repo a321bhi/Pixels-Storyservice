@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,17 +31,21 @@ public class MediaOracle {
 	private String mediaId;
 
 	private Date createdAt = new Date();
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private PixelSenseUser mediaPostedBy;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "mediaLikedBy", joinColumns = @JoinColumn(name = "mediaID"), inverseJoinColumns = @JoinColumn(name = "userId"))
 	private Set<PixelSenseUser> likedBy = new HashSet<>();
 
-	@OneToMany(mappedBy = "commentOnMediaId",fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "commentOnMediaId",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private Set<MediaComment> mediaComments = new HashSet<>();
 
+	public void removeLikedByAndComments() {
+		this.likedBy.clear();
+		this.mediaComments.clear();
+	}
 	public MediaOracle() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -52,8 +57,7 @@ public class MediaOracle {
 		this.mediaPostedBy = mediaPostedBy;
 	}
 
-	public MediaOracle(PixelSenseUser mediaPostedBy, HashSet<PixelSenseUser> likedBy,
-			HashSet<MediaComment> mediaComments) {
+	public MediaOracle(PixelSenseUser mediaPostedBy, HashSet<PixelSenseUser> likedBy, HashSet<MediaComment> mediaComments) {
 		super();
 		this.mediaPostedBy = mediaPostedBy;
 		this.likedBy = likedBy;

@@ -1,4 +1,4 @@
-package com.pixels.feedservice.model;
+package com.pixels.feedservice.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class Payload implements Serializable {
+public class MediaRequestDTO implements Serializable {
 	/**
 	 * 
 	 */
@@ -16,20 +16,32 @@ public class Payload implements Serializable {
 	private Date mediaDate;
 	private List<String> mediaTags = new ArrayList<>();
 	private String mediaCaption;
-	private MultipartFile image = null;
-	private String imageAsBase64 = "";
+	private MultipartFile image;
+	private String imageAsBase64;
 
-	public Payload(String mediaId, Date mediaDate, List<String> mediaTags, String mediaCaption, String imageAsBase64) {
+	public MediaRequestDTO(Date mediaDate, List<String> mediaTags, String mediaCaption, MultipartFile image) {
 		super();
+		this.mediaDate = mediaDate;
+		this.mediaTags = mediaTags;
+		this.mediaCaption = mediaCaption;
+		this.image = image;
+	}
+
+	public MediaRequestDTO(List<String> mediaTags, String mediaCaption, String imageAsBase64) {
+		this.mediaTags = mediaTags;
+		this.mediaCaption = mediaCaption;
+		this.setImageAsBase64(imageAsBase64);
+	}
+
+	public MediaRequestDTO(String mediaId, Date mediaDate, List<String> mediaTags, String mediaCaption, String imageAsBase64) {
 		this.mediaId = mediaId;
 		this.mediaDate = mediaDate;
 		this.mediaTags = mediaTags;
 		this.mediaCaption = mediaCaption;
-		this.imageAsBase64 = imageAsBase64;
+		this.setImageAsBase64(imageAsBase64);
 	}
 
-	public Payload(String mediaId, Date mediaDate, List<String> mediaTags, String mediaCaption, MultipartFile image) {
-		super();
+	public MediaRequestDTO(String mediaId, Date mediaDate, List<String> mediaTags, String mediaCaption, MultipartFile image) {
 		this.mediaId = mediaId;
 		this.mediaDate = mediaDate;
 		this.mediaTags = mediaTags;
@@ -37,7 +49,7 @@ public class Payload implements Serializable {
 		this.image = image;
 	}
 
-	public Payload() {
+	public MediaRequestDTO() {
 		super();
 	}
 

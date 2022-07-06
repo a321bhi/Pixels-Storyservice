@@ -1,4 +1,4 @@
-package com.pixels.feedservice.model;
+package com.pixels.feedservice.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
-
+import com.pixels.feedservice.model.MediaComment;
+import com.pixels.feedservice.model.PixelSenseUser;
 
 public class ResponsePayload implements Serializable {
 	/**
@@ -138,15 +138,42 @@ public class ResponsePayload implements Serializable {
 		this.imageAsBase64 = imageAsBase64;
 	}
 	public void refactorMediaComments() {
-		this.mediaComments.stream().forEach(t -> t.setCommentByUser(new PixelSenseUser(t.getCommentByUser().getUserName())));
-		this.mediaComments.stream().forEach(t -> {
-			Set<PixelSenseUser> commentLikedBy = new HashSet<>();
-			t.getCommentLikedBy().stream().forEach(u->
-					{
-						commentLikedBy.add(new PixelSenseUser(u.getUserName()));
-					});
-			t.setCommentLikedBy(commentLikedBy);
-			
-			});
+		this.mediaComments.stream()
+		.forEach(t -> t.setCommentByUser(new PixelSenseUser(t.getCommentByUser().getUserName())));
+this.mediaComments.stream().forEach(t -> {
+	Set<PixelSenseUser> commentLikedBy = new HashSet<>();
+	t.getCommentLikedBy().stream().forEach(u -> {
+		commentLikedBy.add(new PixelSenseUser(u.getUserName()));
+	});
+	t.setCommentLikedBy(commentLikedBy);
+});
+this.mediaComments.stream().forEach(t -> {
+	Set<PixelSenseUser> commentLikedBy = new HashSet<>();
+	t.getCommentLikedBy().stream().forEach(u -> {
+		commentLikedBy.add(new PixelSenseUser(u.getUserName()));
+	});
+	t.setCommentLikedBy(commentLikedBy);
+});
+
+this.mediaComments.stream().forEach(mediaComment -> {
+	Set<MediaComment> mediaCommentSet = mediaComment.getCommentsOnComment();
+	mediaCommentSet.stream()
+			.forEach(t -> t.setCommentByUser(new PixelSenseUser(t.getCommentByUser().getUserName())));
+	mediaCommentSet.stream().forEach(t -> {
+		Set<PixelSenseUser> commentLikedBy = new HashSet<>();
+		t.getCommentLikedBy().stream().forEach(u -> {
+			commentLikedBy.add(new PixelSenseUser(u.getUserName()));
+		});
+		t.setCommentLikedBy(commentLikedBy);
+	});
+	mediaCommentSet.stream().forEach(t -> {
+		Set<PixelSenseUser> commentLikedBy = new HashSet<>();
+		t.getCommentLikedBy().stream().forEach(u -> {
+			commentLikedBy.add(new PixelSenseUser(u.getUserName()));
+		});
+		t.setCommentLikedBy(commentLikedBy);
+	});
+
+		});
 	}
 }

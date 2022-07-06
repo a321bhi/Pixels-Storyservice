@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.pixels.feedservice.doa.MediaRepository;
@@ -59,4 +62,15 @@ public class MediaMongoServiceImpl implements MediaMongoService {
 		return mediaRepository.findAllMediaTags();
 	}
 
+	//pageable
+	@Override
+	public Page<MediaMongo> findByMediaTags(List<String> mediaTags, int page, int size, String sortDir, String sort) {
+		  PageRequest pageReq
+	        = PageRequest.of(page, size, Sort.Direction.fromString(sortDir), sort);
+
+		return  mediaRepository.findByMediaTags(mediaTags, pageReq);
+		
+	}
+	
 }
+

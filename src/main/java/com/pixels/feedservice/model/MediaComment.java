@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,8 +14,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class MediaComment {
@@ -34,12 +38,43 @@ public class MediaComment {
 	@JoinColumn(name = "mediaId")
 	private MediaOracle commentOnMediaId;
 
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "commentLikedBy", joinColumns = @JoinColumn(name = "commendId"), inverseJoinColumns = @JoinColumn(name = "userId"))
 	private Set<PixelSenseUser> commentLikedBy = new HashSet<>();
 
+	@ManyToOne
+	@JoinColumn(name = "COMMENT_ON_COMMENTID")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private MediaComment commentOnCommentId;
+
+	@OneToMany(mappedBy = "commentOnCommentId", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+	private Set<MediaComment> commentsOnComment = new HashSet<>();
+
+	public MediaComment getCommentOnCommentId() {
+		return commentOnCommentId;
+	}
+
+	public void setCommentOnCommentId(MediaComment commentOnCommentId) {
+		this.commentOnCommentId = commentOnCommentId;
+	}
+
+	public Set<MediaComment> getCommentsOnComment() {
+		return commentsOnComment;
+	}
+
+	public void setCommentsOnCommment(Set<MediaComment> commentsOnCommment) {
+		this.commentsOnComment = commentsOnCommment;
+	}
+
 	public MediaComment() {
 		super();
+	}
+
+	public MediaComment(String commentContent, PixelSenseUser commentByUser, MediaComment commentOnCommentId) {
+		super();
+		this.commentContent = commentContent;
+		this.commentByUser = commentByUser;
+		this.commentOnCommentId = commentOnCommentId;
 	}
 
 	public MediaComment(String commentContent, PixelSenseUser commentByUser, MediaOracle commentOnMediaId) {

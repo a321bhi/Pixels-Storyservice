@@ -1,4 +1,4 @@
-package com.pixels.feedservice.model;
+package com.pixels.feedservice.dto;
 
 import java.util.ArrayList;
 import java.util.List;

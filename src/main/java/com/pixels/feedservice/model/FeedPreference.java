@@ -42,7 +42,6 @@ public class FeedPreference {
 
 	public FeedPreference() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 }

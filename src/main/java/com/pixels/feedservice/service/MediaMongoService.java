@@ -3,6 +3,8 @@ package com.pixels.feedservice.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+
 import com.pixels.feedservice.model.MediaMongo;
 
 public interface MediaMongoService {
@@ -21,5 +23,7 @@ public interface MediaMongoService {
 	public List<MediaMongo> findTagsByQueryTag(String queryTag);
 	
 	public List<MediaMongo> getAllTags();
+
+	Page<MediaMongo> findByMediaTags(List<String> mediaTags, int page, int size, String sortDir, String sort);
 	
 }
