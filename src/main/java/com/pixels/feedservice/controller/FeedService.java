@@ -217,6 +217,7 @@ public class FeedService {
 
 			List<Payload> outputPayload = new ArrayList<>();
 			for (MediaMongo output : outputFeed) {
+				
 				Payload payload = new Payload(output.getMediaId(), output.getMediaDate(), output.getMediaTags(),
 						output.getMediaCaption(), output.getMediaEncodedData());
 				outputPayload.add(payload);

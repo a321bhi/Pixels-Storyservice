@@ -8,10 +8,10 @@
 		<version>2.7.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>com.pixels</groupId>
 	<artifactId>pixels-feedservice</artifactId>
 	<version>1</version>
-	<name>pixelsense-mediaservice-1</name>
+	<name>pixels-feedservice</name>
 	<description>Feed microservice for Pixels app.</description>
 	<properties>
 		<java.version>17</java.version>

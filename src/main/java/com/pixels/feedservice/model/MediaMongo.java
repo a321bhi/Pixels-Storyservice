@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,6 +19,7 @@ public class MediaMongo {
 	private String mediaEncodedData;
 	private List<String> mediaTags = new ArrayList<>();
 	private String mediaCaption;
+	
 	
 	public MediaMongo() {
 		super();
