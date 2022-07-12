@@ -17,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -217,7 +216,7 @@ public class FeedService {
 
 			List<Payload> outputPayload = new ArrayList<>();
 			for (MediaMongo output : outputFeed) {
-				
+
 				Payload payload = new Payload(output.getMediaId(), output.getMediaDate(), output.getMediaTags(),
 						output.getMediaCaption(), output.getMediaEncodedData());
 				outputPayload.add(payload);
@@ -279,54 +278,52 @@ public class FeedService {
 		return new ResponseEntity<>("Story added!", HttpStatus.OK);
 
 	}
-	
+
 	@GetMapping(value = "/stories/{username}")
-	public List<UserStoryDTO> getStories(@PathVariable String username){
+	public List<UserStoryDTO> getStories(@PathVariable String username) {
 //		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Optional<PixelSenseUser> optionalUser = userServiceImpl.findUserById(username);
 		if (optionalUser.isEmpty()) {
 			throw new UsernameNotFoundException();
 		}
 		PixelSenseUser user = optionalUser.get();
-		
-		List<UserStory> listOfUserStory= userStoryServiceImpl.getActiveStoriesByUsername(user.getUserName());
+
+		List<UserStory> listOfUserStory = userStoryServiceImpl.getActiveStoriesByUsername(user.getUserName());
 		List<UserStoryDTO> listOfUserStoryDTOs = new ArrayList<>();
 		UserStoryDTO userStoryDTOTemp;
-		for(UserStory userStoryTemp : listOfUserStory) {
+		for (UserStory userStoryTemp : listOfUserStory) {
 			userStoryDTOTemp = new UserStoryDTO();
 			userStoryDTOTemp.setStoryByUsername(userStoryTemp.getStoryByUsername());
 			userStoryDTOTemp.setStoryExpiryTimeStamp(userStoryTemp.getStoryExpiryTimestamp());
 			userStoryDTOTemp.setTimestamp(userStoryTemp.getTimestamp());
 			userStoryDTOTemp.setStoryId(userStoryTemp.getStoryId());
-			userStoryDTOTemp.setImageAsBase64(
-					Base64.getEncoder().encodeToString(userStoryTemp.getImage().getData()));
+			userStoryDTOTemp.setImageAsBase64(Base64.getEncoder().encodeToString(userStoryTemp.getImage().getData()));
 			listOfUserStoryDTOs.add(userStoryDTOTemp);
 		}
 		return listOfUserStoryDTOs;
 	}
+
 	@GetMapping(value = "/archived-stories/{username}")
-	public List<UserStoryDTO> getArchivedStories(@PathVariable String username){
+	public List<UserStoryDTO> getArchivedStories(@PathVariable String username) {
 //		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Optional<PixelSenseUser> optionalUser = userServiceImpl.findUserById(username);
 		if (optionalUser.isEmpty()) {
 			throw new UsernameNotFoundException();
 		}
 		PixelSenseUser user = optionalUser.get();
-		
-		List<UserStory> listOfUserStory= userStoryServiceImpl.getArchivedStoriesByUsername(user.getUserName());
+
+		List<UserStory> listOfUserStory = userStoryServiceImpl.getArchivedStoriesByUsername(user.getUserName());
 		List<UserStoryDTO> listOfUserStoryDTOs = new ArrayList<>();
 		UserStoryDTO userStoryDTOTemp;
-		for(UserStory userStoryTemp : listOfUserStory) {
+		for (UserStory userStoryTemp : listOfUserStory) {
 			userStoryDTOTemp = new UserStoryDTO();
 			userStoryDTOTemp.setStoryByUsername(userStoryTemp.getStoryByUsername());
 			userStoryDTOTemp.setStoryExpiryTimeStamp(userStoryTemp.getStoryExpiryTimestamp());
 			userStoryDTOTemp.setTimestamp(userStoryTemp.getTimestamp());
 			userStoryDTOTemp.setStoryId(userStoryTemp.getStoryId());
-			userStoryDTOTemp.setImageAsBase64(
-					Base64.getEncoder().encodeToString(userStoryTemp.getImage().getData()));
+			userStoryDTOTemp.setImageAsBase64(Base64.getEncoder().encodeToString(userStoryTemp.getImage().getData()));
 			listOfUserStoryDTOs.add(userStoryDTOTemp);
 		}
 		return listOfUserStoryDTOs;
 	}
 }
-
