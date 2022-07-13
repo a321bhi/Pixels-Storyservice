@@ -110,6 +110,7 @@ public class FeedService {
 		for (MediaMongo media : output) {
 			outputPayload.addAll(media.getMediaTags());
 		}
+//		return outputPayload.stream().distinct().collect(Collectors.toList());
 		return outputPayload;
 	}
 
