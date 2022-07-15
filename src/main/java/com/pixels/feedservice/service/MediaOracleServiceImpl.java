@@ -11,39 +11,34 @@ import com.pixels.feedservice.model.MediaOracle;
 import com.pixels.feedservice.model.PixelSenseUser;
 
 @Service
-public class MediaOracleServiceImpl implements MediaOracleService{
+public class MediaOracleServiceImpl implements MediaOracleService {
 
 	@Autowired
 	MediaOracleRespository mediaOracleRespository;
-	
+
 	@Override
 	public List<String> getAllMediaOfOneUser(PixelSenseUser user) {
-		List<String> listOfMedia = mediaOracleRespository.findAllMediaOfUser(user);
-		return listOfMedia;
+		return mediaOracleRespository.findAllMediaOfUser(user);
 	}
 
 	@Override
 	public Optional<MediaOracle> findMediaById(String mediaId) {
-		Optional<MediaOracle> mediaOptional = mediaOracleRespository.findById(mediaId);
-		return mediaOptional;
+		return mediaOracleRespository.findById(mediaId);
 	}
 
 	@Override
 	public MediaOracle addMedia(MediaOracle media) {
-		MediaOracle savedMedia = mediaOracleRespository.save(media);
-		return savedMedia;
+		return mediaOracleRespository.save(media);
 	}
 
 	@Override
-	public void deleteMediaById(String MediaId) {
-		mediaOracleRespository.deleteById(MediaId);
-		return;
+	public void deleteMediaById(String mediaId) {
+		mediaOracleRespository.deleteById(mediaId);
 	}
 
 	@Override
 	public void deleteMedia(MediaOracle media) {
 		mediaOracleRespository.delete(media);
-		return;
 	}
 
 }

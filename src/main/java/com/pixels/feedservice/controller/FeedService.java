@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pixels.feedservice.dto.MediaRequestDTO;
 import com.pixels.feedservice.dto.Payload;
 import com.pixels.feedservice.dto.ResponsePayload;
 import com.pixels.feedservice.dto.SearchResult;
@@ -92,7 +91,10 @@ public class FeedService {
 				temporaryResponsePayload.refactorMediaComments();
 				Optional<MediaMongo> mediaProfilePicTempOpt = mediaMongoServiceImpl
 						.findMediaById(usernamePostedBy.getProfilePicId());
-				MediaMongo mediaProfilePicTemp = mediaProfilePicTempOpt.get();
+				MediaMongo mediaProfilePicTemp = null;
+				if (mediaProfilePicTempOpt.isPresent()) {
+					mediaProfilePicTemp = mediaProfilePicTempOpt.get();
+				}
 				temporaryResponsePayload
 						.setProfilePicOfUsernamePostedByBase64(mediaProfilePicTemp.getMediaEncodedData());
 			}
@@ -110,18 +112,11 @@ public class FeedService {
 		for (MediaMongo media : output) {
 			outputPayload.addAll(media.getMediaTags());
 		}
-//		return outputPayload.stream().distinct().collect(Collectors.toList());
 		return outputPayload;
 	}
 
 	@GetMapping("/feed/{tags}")
 	public List<ResponsePayload> getFeeds(@PathVariable List<String> tags) {
-//		String usernameRequestedBy = SecurityContextHolder.getContext().getAuthentication().getName();
-//		Optional<PixelSenseUser> optionalUser = userServiceImpl.findUser(username);
-//		if (optionalUser.isEmpty()) {
-//			throw new UsernameNotFoundException();
-//		}
-
 		Optional<List<MediaMongo>> outputFeedOpt = mediaMongoServiceImpl.findByMediaTags(tags);
 		if (outputFeedOpt.isPresent()) {
 			List<MediaMongo> outputFeed = outputFeedOpt.get();
@@ -143,8 +138,6 @@ public class FeedService {
 				tempOptMedia = mediaOracleServiceImpl.findMediaById(temporaryResponsePayload.getMediaId());
 				if (tempOptMedia.isPresent()) {
 					tempMedia = tempOptMedia.get();
-					// usersWhoLikedThisMedia =
-					// mediaRepository.findUsersWhoLikedThisMedia(tempMedia);
 					for (PixelSenseUser tempUser : tempMedia.getLikedBy()) {
 						usersWhoLikedThisMedia.add(tempUser.getUserName());
 					}
@@ -155,7 +148,11 @@ public class FeedService {
 					temporaryResponsePayload.refactorMediaComments();
 					Optional<MediaMongo> mediaProfilePicTempOpt = mediaMongoServiceImpl
 							.findMediaById(usernamePostedBy.getProfilePicId());
-					MediaMongo mediaProfilePicTemp = mediaProfilePicTempOpt.get();
+
+					MediaMongo mediaProfilePicTemp = null;
+					if (mediaProfilePicTempOpt.isPresent()) {
+						mediaProfilePicTemp = mediaProfilePicTempOpt.get();
+					}
 					temporaryResponsePayload
 							.setProfilePicOfUsernamePostedByBase64(mediaProfilePicTemp.getMediaEncodedData());
 					listOfResponsePayload.add(temporaryResponsePayload);
@@ -165,14 +162,14 @@ public class FeedService {
 			return listOfResponsePayload;
 
 		} else {
-			return new ArrayList<ResponsePayload>();
+			return new ArrayList<>();
 		}
 	}
 
 	@PostMapping("/feed-preference")
 	public ResponseEntity<String> setPreference(@RequestBody FeedPreference feedPreference) {
 		feedPreferenceServiceImpl.setPreference(feedPreference);
-		return new ResponseEntity<String>("preference set", HttpStatus.OK);
+		return new ResponseEntity<>("preference set", HttpStatus.OK);
 	}
 
 	@GetMapping("/feed-preference/{username}")
@@ -190,7 +187,7 @@ public class FeedService {
 		List<MediaMongo> mediaTagsOutput = mediaMongoServiceImpl.findTagsByQueryTag(query);
 		List<String> usernameOutput = userServiceImpl.getUsernameBasedOnQuery(query);
 		List<String> mediaTags = new ArrayList<>();
-		mediaTagsOutput.stream().map(media -> media.getMediaTags()).forEach(t -> {
+		mediaTagsOutput.stream().map(MediaMongo::getMediaTags).forEach(t -> {
 			for (String checkingForQueryString : t) {
 				if (checkingForQueryString.contains(query) && !mediaTags.contains(query)) {
 					mediaTags.add(checkingForQueryString);
@@ -206,11 +203,6 @@ public class FeedService {
 	public List<ResponsePayload> getFeedsPaginated(@RequestParam("page") int page, @RequestParam("size") int size,
 			@RequestParam("sortDir") String sortDir, @RequestParam("sort") String sort,
 			@RequestParam("tags") List<String> tags) {
-//		String usernameRequestedBy = SecurityContextHolder.getContext().getAuthentication().getName();
-//		Optional<PixelSenseUser> optionalUser = userServiceImpl.findUser(username);
-//		if (optionalUser.isEmpty()) {
-//			throw new UsernameNotFoundException();
-//		}
 		Page<MediaMongo> outputFeedPage = mediaMongoServiceImpl.findByMediaTags(tags, page, size, sortDir, sort);
 		List<MediaMongo> outputFeed = outputFeedPage.getContent();
 		if (!outputFeed.isEmpty()) {
@@ -242,7 +234,10 @@ public class FeedService {
 					temporaryResponsePayload.setUsernamePostedBy(usernamePostedBy.getUserName());
 					Optional<MediaMongo> mediaProfilePicTempOpt = mediaMongoServiceImpl
 							.findMediaById(usernamePostedBy.getProfilePicId());
-					MediaMongo mediaProfilePicTemp = mediaProfilePicTempOpt.get();
+					MediaMongo mediaProfilePicTemp = null;
+					if (mediaProfilePicTempOpt.isPresent()) {
+						mediaProfilePicTemp = mediaProfilePicTempOpt.get();
+					}
 					temporaryResponsePayload
 							.setProfilePicOfUsernamePostedByBase64(mediaProfilePicTemp.getMediaEncodedData());
 					temporaryResponsePayload.setMediaComments(tempMedia.getMediaComments());
@@ -254,12 +249,12 @@ public class FeedService {
 			return listOfResponsePayload;
 
 		} else {
-			return new ArrayList<ResponsePayload>();
+			return new ArrayList<>();
 		}
 	}
 
 	@PostMapping(value = "/story", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<String> uploadStory(@ModelAttribute MediaRequestDTO payload) {
+	public ResponseEntity<String> uploadStory(@ModelAttribute Payload payload) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Optional<PixelSenseUser> optionalUser = userServiceImpl.findUserById(username);
 		if (optionalUser.isEmpty()) {
@@ -282,7 +277,6 @@ public class FeedService {
 
 	@GetMapping(value = "/stories/{username}")
 	public List<UserStoryDTO> getStories(@PathVariable String username) {
-//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Optional<PixelSenseUser> optionalUser = userServiceImpl.findUserById(username);
 		if (optionalUser.isEmpty()) {
 			throw new UsernameNotFoundException();
@@ -306,7 +300,6 @@ public class FeedService {
 
 	@GetMapping(value = "/archived-stories/{username}")
 	public List<UserStoryDTO> getArchivedStories(@PathVariable String username) {
-//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Optional<PixelSenseUser> optionalUser = userServiceImpl.findUserById(username);
 		if (optionalUser.isEmpty()) {
 			throw new UsernameNotFoundException();

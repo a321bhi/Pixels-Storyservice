@@ -16,7 +16,7 @@ public interface MediaMongoService {
 
 	public void deleteMedia(MediaMongo media);
 
-	public void deleteMediaById(String MediaId);
+	public void deleteMediaById(String mediaId);
 
 	public List<MediaMongo> findAllMedia();
 	

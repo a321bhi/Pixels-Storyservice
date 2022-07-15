@@ -17,7 +17,6 @@ public class FeedPreferenceServiceImpl implements FeedPreferenceService {
 	@Override
 	public void setPreference(FeedPreference feedPreference) {
 		feedPreferenceRepository.save(feedPreference);
-		return;
 	}
 
 	@Override

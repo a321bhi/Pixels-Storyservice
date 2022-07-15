@@ -20,26 +20,22 @@ public class MediaMongoServiceImpl implements MediaMongoService {
 
 	@Override
 	public Optional<MediaMongo> findMediaById(String mediaId) {
-		Optional<MediaMongo> mediaOptional = mediaRepository.findById(mediaId);
-		return mediaOptional;
+		return mediaRepository.findById(mediaId);
 	}
 
 	@Override
 	public MediaMongo addMedia(MediaMongo media) {
-		MediaMongo savedMedia = mediaRepository.save(media);
-		return savedMedia;
+		return mediaRepository.save(media);
 	}
 
 	@Override
-	public void deleteMediaById(String MediaId) {
-		mediaRepository.deleteById(MediaId);
-		return;
+	public void deleteMediaById(String mediaId) {
+		mediaRepository.deleteById(mediaId);
 	}
 
 	@Override
 	public void deleteMedia(MediaMongo media) {
 		mediaRepository.delete(media);
-		return;
 	}
 
 	@Override

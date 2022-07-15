@@ -48,7 +48,6 @@ public class MediaOracle {
 	}
 	public MediaOracle() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public MediaOracle(Date createdAt, PixelSenseUser mediaPostedBy) {
@@ -57,7 +56,7 @@ public class MediaOracle {
 		this.mediaPostedBy = mediaPostedBy;
 	}
 
-	public MediaOracle(PixelSenseUser mediaPostedBy, HashSet<PixelSenseUser> likedBy, HashSet<MediaComment> mediaComments) {
+	public MediaOracle(PixelSenseUser mediaPostedBy, Set<PixelSenseUser> likedBy, Set<MediaComment> mediaComments) {
 		super();
 		this.mediaPostedBy = mediaPostedBy;
 		this.likedBy = likedBy;

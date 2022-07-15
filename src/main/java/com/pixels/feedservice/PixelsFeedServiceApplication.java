@@ -8,11 +8,6 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableEurekaClient
 public class PixelsFeedServiceApplication {
 
-//	@Bean
-//	@LoadBalanced
-//	public WebClient.Builder loadBalancedWebClientBuilder() {
-//	   return WebClient.builder();
-//	}
 	public static void main(String[] args) {
 		SpringApplication.run(PixelsFeedServiceApplication.class, args);
 	}

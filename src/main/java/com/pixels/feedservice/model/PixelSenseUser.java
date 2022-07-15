@@ -89,7 +89,6 @@ public class PixelSenseUser implements Serializable {
 
 	public PixelSenseUser() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public PixelSenseUser(String username, String fullName, String firstName, String middleName, String lastName,
@@ -243,7 +242,7 @@ public class PixelSenseUser implements Serializable {
 		return mediaList;
 	}
 
-	public void setMediaList(HashSet<MediaOracle> mediaList) {
+	public void setMediaList(Set<MediaOracle> mediaList) {
 		this.mediaList = mediaList;
 	}
 
@@ -251,7 +250,7 @@ public class PixelSenseUser implements Serializable {
 		return likedMedia;
 	}
 
-	public void setLikedMedia(HashSet<MediaOracle> likedMedia) {
+	public void setLikedMedia(Set<MediaOracle> likedMedia) {
 		this.likedMedia = likedMedia;
 	}
 
@@ -259,7 +258,7 @@ public class PixelSenseUser implements Serializable {
 		return commentsOnMedia;
 	}
 
-	public void setCommentsOnMedia(HashSet<MediaComment> commentsOnMedia) {
+	public void setCommentsOnMedia(Set<MediaComment> commentsOnMedia) {
 		this.commentsOnMedia = commentsOnMedia;
 	}
 
@@ -267,7 +266,7 @@ public class PixelSenseUser implements Serializable {
 		return follower;
 	}
 
-	public void setFollower(HashSet<PixelSenseUser> follower) {
+	public void setFollower(Set<PixelSenseUser> follower) {
 		this.follower = follower;
 	}
 
@@ -286,12 +285,4 @@ public class PixelSenseUser implements Serializable {
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
 	}
-
-//	public void refactorFollowerList() {
-//		HashSet<PixelsUser> updatedFollowerSet = new HashSet<>();
-//		this.follower.stream().forEach(t -> {
-//			updatedFollowerSet.add(new PixelsUser(t.getUserName()));
-//		});
-//		this.setFollower(updatedFollowerSet);
-//	}
 }

@@ -12,6 +12,6 @@ public interface MediaOracleService {
 	public Optional<MediaOracle> findMediaById(String mediaId);
 	public MediaOracle addMedia(MediaOracle media);
 	public void deleteMedia(MediaOracle media);
-	public void deleteMediaById(String MediaId);
+	public void deleteMediaById(String mediaId);
 	
 }
