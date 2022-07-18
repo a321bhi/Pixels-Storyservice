@@ -23,8 +23,8 @@ pipeline {
     stage('Deploy') {
       steps {
         bat 'docker build -t pixels-feedservice .'
-        bat 'docker tag pixels-feedservice abhi2104/pixels-feedservice'
-        bat 'docker push abhi2104/pixels-feedservice'
+        bat 'docker tag pixels-feedservice abhi2104/pixels-feedservice:latest'
+        bat 'docker push abhi2104/pixels-feedservice:latest'
       }
     }
 
@@ -33,7 +33,7 @@ pipeline {
       	label 'jenkinsagent'
       }
       steps {
-        sh 'docker pull abhi2104/pixels-feedservice'
+        sh 'docker pull abhi2104/pixels-feedservice:latest'
       }
     }
 
