@@ -20,7 +20,7 @@ pipeline {
       }
     }
 
-    stage('Deploy') {
+    stage('Push to Hub') {
       steps {
         bat 'docker build -t pixels-feedservice .'
         bat 'docker tag pixels-feedservice abhi2104/pixels-feedservice:latest'
@@ -28,10 +28,13 @@ pipeline {
       }
     }
 
-    stage('') {
+    stage('Deploy') {
       agent {
-      	label 'jenkinsagent'
+        node {
+          label 'jenkinsagent'
+        }
       }
+      options { skipDefaultCheckout() }
       steps {
         sh 'docker pull abhi2104/pixels-feedservice:latest'
       }
