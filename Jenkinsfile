@@ -22,9 +22,9 @@ pipeline {
 
     stage('Push to Hub') {
       steps {
-        bat 'docker build -t pixels-feedservice .'
-        bat 'docker tag pixels-feedservice abhi2104/pixels-feedservice:latest'
-        bat 'docker push abhi2104/pixels-feedservice:latest'
+        bat 'docker build -t pixels-storyservice .'
+        bat 'docker tag pixels-storyservice abhi2104/pixels-storyservice:latest'
+        bat 'docker push abhi2104/pixels-storyservice:latest'
       }
     }
 
@@ -36,7 +36,7 @@ pipeline {
       }
       options { skipDefaultCheckout() }
       steps {
-        sh 'docker pull abhi2104/pixels-feedservice:latest'
+        sh 'docker pull abhi2104/pixels-storyservice:latest'
       }
     }
 
